@@ -22,9 +22,7 @@ struct TodoList{
 
 impl TodoList{
     fn new() -> TodoList{
-        TodoList{
-            todos: Vec::new(),
-        }
+        TodoList{ todos: Vec::new(), }
     }
 
     fn add(&mut self, todo: TodoItem){
@@ -42,6 +40,12 @@ impl TodoList{
     fn incomplete(&mut self, todo_index: usize){
         self.todos[todo_index].completed = ' ';
     }
+
+    fn print(&self){
+        for todo in &self.todos{
+            println!("[ {} ] - {}", todo.completed, todo.name);
+        }
+    }
 }
 
 enum Command{
@@ -54,9 +58,21 @@ enum Command{
 
 
 fn main() {
+    // Collect the arguments:
     let args: Vec<String> = env::args().collect();
-    let todo = TodoItem::new(args[1].clone().to_string());
-
+    // Init a todo list:
+    let todo_list = TodoList::new();
+    // Match the command that was given:
+    let command = match args[1].as_str() {
+        "get" => Command::Get,
+        "add" => Command::Add(args[2].clone()),
+        "remove" => Command::Remove(args[2].parse().expect("")),
+        "complete" => Command::Complete(args[2].parse().expect("")),
+        "incomplete" => Command::Incomplete(args[2].parse().expect("")),
+        _ => panic!("Must provide a valid command\nget, add, remove, complete, incomplete"),
+    };
+    // Match the command to its functionality:
+    // Output a success of failure message (and exit):
 }
 
 
