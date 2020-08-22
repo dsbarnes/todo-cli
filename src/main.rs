@@ -1,9 +1,13 @@
 // Why not std::io ??
 // https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html
+// 
+// Do something to make the program persistent
 use std::env;
+// use std::io;
 
 struct TodoItem{
     name: String,
+    // Should do a bool
     completed: char,
 }
 
@@ -24,23 +28,18 @@ impl TodoList{
     fn new() -> TodoList{
         TodoList{ todos: Vec::new(), }
     }
-
     fn add(&mut self, todo: TodoItem){
         self.todos.push(todo);
     }
-
     fn remove(&mut self, todo_index: usize){
         self.todos.remove(todo_index);
     }
-
     fn complete(&mut self, todo_index: usize){
         self.todos[todo_index].completed = 'x';
     }
-
     fn incomplete(&mut self, todo_index: usize){
         self.todos[todo_index].completed = ' ';
     }
-
     fn print(&self){
         for todo in &self.todos{
             println!("[ {} ] - {}", todo.completed, todo.name);
@@ -49,6 +48,7 @@ impl TodoList{
 }
 
 enum Command{
+    // Should be Print for consistency
     Get,
     Add(String),
     Remove(usize),
@@ -56,14 +56,14 @@ enum Command{
     Incomplete(usize),
 }
 
-
 fn main() {
     // Collect the arguments:
     let args: Vec<String> = env::args().collect();
+
     // Init a todo list:
     let mut todo_list = TodoList::new();
 
-    // Create come placeholders so we know that we're looking at a todo list:
+    // Create some placeholders so we know that we're looking at a todo list:
     let placeholder_1 = TodoItem::new("Placeholder 1".to_string());
     let placeholder_2 = TodoItem::new("Placeholder 2".to_string());
     todo_list.add(placeholder_1);
@@ -78,6 +78,7 @@ fn main() {
         "incomplete" => Command::Incomplete(args[2].parse().expect("")),
         _ => panic!("Must provide a valid command\nget, add, remove, complete, incomplete"),
     };
+
     // Match the command to its functionality:
     match command {
         Command::Get => todo_list.print(),
@@ -99,7 +100,5 @@ fn main() {
         },
     }
     // Output a success of failure message (and exit):
-    // //
+    // (That's what todo_list.print() is ...)
 }
-
-
