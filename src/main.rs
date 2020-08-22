@@ -61,7 +61,14 @@ fn main() {
     // Collect the arguments:
     let args: Vec<String> = env::args().collect();
     // Init a todo list:
-    let todo_list = TodoList::new();
+    let mut todo_list = TodoList::new();
+
+    // Create come placeholders so we know that we're looking at a todo list:
+    let placeholder_1 = TodoItem::new("Placeholder 1".to_string());
+    let placeholder_2 = TodoItem::new("Placeholder 2".to_string());
+    todo_list.add(placeholder_1);
+    todo_list.add(placeholder_2);
+
     // Match the command that was given:
     let command = match args[1].as_str() {
         "get" => Command::Get,
@@ -72,10 +79,27 @@ fn main() {
         _ => panic!("Must provide a valid command\nget, add, remove, complete, incomplete"),
     };
     // Match the command to its functionality:
+    match command {
+        Command::Get => todo_list.print(),
+        Command::Add(todo) => {
+            todo_list.add(TodoItem::new(todo));
+            todo_list.print();
+        },
+        Command::Remove(index) => {
+            todo_list.remove(index);
+            todo_list.print();
+        },
+        Command::Complete(index) => {
+            todo_list.complete(index);
+            todo_list.print();
+        },
+        Command::Incomplete(index) => {
+            todo_list.incomplete(index);
+            todo_list.print();
+        },
+    }
     // Output a success of failure message (and exit):
+    // //
 }
-
-
-
 
 
