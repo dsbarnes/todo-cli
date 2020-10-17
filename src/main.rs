@@ -3,7 +3,6 @@
 // 
 // Do something to make the program persistent
 use std::env;
-// use std::io;
 
 struct TodoItem{
     name: String,
